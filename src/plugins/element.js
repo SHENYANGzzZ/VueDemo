@@ -11,12 +11,14 @@ import {
   Menu,
   Submenu,
   MenuItem,
+  MenuItemGroup,
   Breadcrumb,
   BreadcrumbItem,
   Card,
   Table,
   TableColumn,
-  pagination
+  pagination,
+  Message
 } from 'element-ui'
 
 Vue.use(Button)
@@ -36,3 +38,6 @@ Vue.use(Card)
 Vue.use(Table)
 Vue.use(TableColumn)
 Vue.use(pagination)
+Vue.use(MenuItemGroup)
+//  prototype 挂载
+Vue.prototype.$Message = Message

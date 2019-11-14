@@ -6,7 +6,13 @@
 </template>
 
 <script>
+// import test from './components/test'
+// import home from './components/Home'
+
 export default {
+  name: 'app',
+  components: {
+  }
 }
 </script>
 
