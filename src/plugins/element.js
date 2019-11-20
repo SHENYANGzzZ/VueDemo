@@ -1,4 +1,5 @@
 import Vue from 'vue'
+// 按需导入
 import {
   Button,
   Form,
@@ -18,7 +19,11 @@ import {
   Table,
   TableColumn,
   pagination,
-  Message
+  Message,
+  dialog,
+  DatePicker,
+  Select,
+  Option
 } from 'element-ui'
 
 Vue.use(Button)
@@ -39,5 +44,10 @@ Vue.use(Table)
 Vue.use(TableColumn)
 Vue.use(pagination)
 Vue.use(MenuItemGroup)
-//  prototype 挂载
-Vue.prototype.$Message = Message
+Vue.use(dialog)
+Vue.use(DatePicker)
+Vue.use(Select)
+Vue.use(Option)
+
+//  Vue原型对象的挂载
+Vue.prototype.$message = Message

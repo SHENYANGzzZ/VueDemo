@@ -10,9 +10,6 @@
 // import home from './components/Home'
 
 export default {
-  name: 'app',
-  components: {
-  }
 }
 </script>
 

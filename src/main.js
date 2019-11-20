@@ -2,18 +2,19 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import axios from 'axios'
 import './plugins/element.js'
 import './assets/css/global.css'
-import axios from 'axios'
-
-// axios.interceptors.request.use(config => {
-//   console.log(config)
-//   return config
-// })
-axios.defaults.baseURL = 'http://127.0.0.1:8080/'
-// Vue.prototyor.$http = axios
 
 Vue.config.productionTip = false
+// 配置axios基础路径
+axios.defaults.baseURL = 'http://127.0.0.1:9090/'
+
+// 配置全局的axios拦截请求，在请求头中加入Authorization
+axios.interceptors.request.use(config => {
+  config.headers.Authorization = window.sessionStorage.getItem('token')
+  return config
+})
 
 new Vue({
   router,
