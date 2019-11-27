@@ -7,7 +7,8 @@
 
       <el-dialog :title="titleMap[dialogStatus]"
                  :visible.sync="dialogFormVisible">
-        <el-form :model="form">
+        <el-form ref="userFormRef"
+                 :model="form">
           <el-form-item label="ID">
             <el-input v-model="form.id"
                       auto-complete="off"></el-input>
@@ -141,10 +142,11 @@ export default {
       // 模态框
       dialogFormVisible: false,
       form: {
-        id: null,
-        name: '',
-        age: null,
-        data: ''
+        id: '',
+        username: '',
+        password: '',
+        sex: '',
+        email: ''
       },
       titleMap: {
         add: '新增人员',
@@ -221,11 +223,11 @@ export default {
     addFinished () {
       this.dialogFormVisible = false
       this.userList.push(this.form)
-      this.form = {}
+      this.$refs.userFormRef.resetFields()
     },
     addCancel () {
       this.dialogFormVisible = false
-      this.form = {}
+      this.$refs.userFormRef.resetFields()
     }
   },
   props: [

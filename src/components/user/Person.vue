@@ -15,7 +15,6 @@
                  type="primary">新建</el-button>
       <el-table :data="tableData"
                 style="width: 100%"
-                ·
                 stripe
                 border>
         <el-table-column prop="date"

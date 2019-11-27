@@ -207,7 +207,11 @@ export default {
       // 新增和修改的dialog
       dialogFormVisible: false,
       form: {
-
+        id: '',
+        username: '',
+        password: '',
+        sex: '',
+        email: ''
       },
       titleMap: {
         add: '新增人员',
@@ -310,7 +314,7 @@ export default {
     // 确认按钮
     addFinished () {
       this.$refs.userFormRef.validate(vali => {
-        if (!vali) return
+        if (!vali) return this.$message.error('操作失败了,请按规范填写!')
 
         this.dialogFormVisible = false
         if (this.dialogStatus === 'add') {
@@ -319,19 +323,27 @@ export default {
           }
           this.form.id = 0
           this.userList.push(this.form)
+          this.$message.success('添加成功!')
+          this.$refs.userFormRef.clearValidate()
+          this.form = {}
         }
-        this.form = {}
+
+        if (this.dialogStatus === 'edit') {
+          this.$message.success('修改成功!')
+        }
       })
     },
     // 返回
     addCancel () {
       this.dialogFormVisible = false
-      this.$refs.userFormRef.resetFields()
+      this.form = {}
+      this.$refs.userFormRef.clearValidate()
     },
     // 模态框关闭
     modalClose (done) {
       done()
-      this.$refs.userFormRef.resetFields()
+      this.form = {}
+      this.$refs.userFormRef.clearValidate()
     },
     // 监听每页展示条数
     handleSizeChange (size) {

@@ -212,7 +212,7 @@
 </template>
 
 <script>
-import { getRequest, putRequest } from '../../api/uum'
+import { getRequest, putRequest, deleteRequest } from '../../api/uum'
 export default {
   data () {
     return {
@@ -282,9 +282,9 @@ export default {
       this.dialogFormVisible = true
       // this.form = this.userList[index]
     },
-    // 非物理删除，放入垃圾数据
+    // 删除
     handleDelete (index, row) {
-
+      this.deleteUser(row.USER_ID)
     },
     getUser () {
       // var url = '/urm/list/TB_USER'
@@ -299,7 +299,12 @@ export default {
       })
     },
     deleteUser (id) {
+      deleteRequest('', {}).then(resp => {
 
+      }).catch(resp => {
+        this.loading = false
+        this.$message({ type: 'error', message: '删除人员数据失败！' })
+      })
     },
     searchClick () {
       console.log(this.searchInfo)
@@ -357,7 +362,7 @@ export default {
   ],
   created: function () {
     console.log('创建实例完成！')
-    // 人员展示列表
+    // 获取人员数据并渲染
     this.getUser()
   },
   mounted: function () {
