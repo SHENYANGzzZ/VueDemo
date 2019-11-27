@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 //
-import Login from '../src/components/login/Login.vue'
-import User from '../src/components/demo/User.vue'
-import Home from '../src/components/home/Home.vue'
-import Test from '../src/components/test'
+import Login from './components/login/Login.vue'
+import User from './components/demo/User.vue'
+import Home from './components/home/Home.vue'
+import Test from './components/test'
 import Echarts from './components/demo/echart.vue'
 // uum应急管理部
 import UUM from './components/demo/uumRest.vue'

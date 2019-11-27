@@ -85,15 +85,6 @@ export default {
           // handle error
           console.log(error)
         })
-
-        // if (res.meta.status !== 200) return this.$Message.error('登录失败')
-        // this.$Message.success('登录成功')
-        // window.sessionStorage.setItem('token', res.data.token)
-
-        // if (valid) {
-        //   this.$Message.success('登录成功!')
-        //   this.$router.push('home')
-        // }
       })
     },
     // 重置按钮
