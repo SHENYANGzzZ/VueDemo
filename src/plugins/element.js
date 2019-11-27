@@ -18,12 +18,16 @@ import {
   Card,
   Table,
   TableColumn,
-  pagination,
+  Pagination,
   Message,
   dialog,
   DatePicker,
   Select,
-  Option
+  Option,
+  Row,
+  Col,
+  Switch,
+  Tooltip
 } from 'element-ui'
 
 Vue.use(Button)
@@ -42,12 +46,16 @@ Vue.use(BreadcrumbItem)
 Vue.use(Card)
 Vue.use(Table)
 Vue.use(TableColumn)
-Vue.use(pagination)
+Vue.use(Pagination)
 Vue.use(MenuItemGroup)
 Vue.use(dialog)
 Vue.use(DatePicker)
 Vue.use(Select)
 Vue.use(Option)
+Vue.use(Row)
+Vue.use(Col)
+Vue.use(Switch)
+Vue.use(Tooltip)
 
 //  Vue原型对象的挂载
 Vue.prototype.$message = Message

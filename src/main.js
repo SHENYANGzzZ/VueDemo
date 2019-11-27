@@ -7,8 +7,6 @@ import './plugins/element.js'
 import './assets/css/global.css'
 
 Vue.config.productionTip = false
-// 配置axios基础路径
-axios.defaults.baseURL = 'http://127.0.0.1:9090/'
 
 // 配置全局的axios拦截请求，在请求头中加入Authorization
 axios.interceptors.request.use(config => {

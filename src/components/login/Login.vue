@@ -42,6 +42,9 @@
 <script>
 import axios from 'axios'
 
+// 配置axios基础路径
+// axios.defaults.baseURL = 'http://127.0.0.1:9090/'
+
 export default {
   data () {
     return {
@@ -76,7 +79,9 @@ export default {
           // 登陆成功将用户信息放入SessionStorage中，因为登录的状态只应在网站打开状态下生效
           window.sessionStorage.setItem('token', response.data.value.username)
           this.$router.push('/home')
-        }).catch(function (error) {
+        }).catch((error) => {
+          this.$message.error('对不起，服务器开了个小差！')
+
           // handle error
           console.log(error)
         })

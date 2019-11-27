@@ -19,7 +19,7 @@
             <!-- 搜索框 -->
             <el-input placeholder="提示文字"
                       prefix-icon="el-icon-search"
-                      v-model="queryInfo.query"
+                      v-model="searchInfo"
                       clearable>
               <!-- 搜索按钮 -->
               <el-button slot="append"
@@ -50,36 +50,36 @@
           </el-table-column>
 
           <!--  -->
-          <el-table-column prop="id"
-                           label="ID"
-                           align="left">
+          <el-table-column label="序号"
+                           width="50px">
+            <template slot-scope="scope">
+              {{ scope.$index+1 }}
+            </template>
           </el-table-column>
+
           <el-table-column label="姓名"
                            align="left">
             <template slot-scope="scope">
-              {{ scope.row.username }}
+              {{ scope.row.USER_NAME }}
             </template>
           </el-table-column>
 
-          <el-table-column prop="password"
-                           label="密码"
+          <el-table-column prop="IDCARD_UUID"
+                           label="身份UUID"
                            align="left">
           </el-table-column>
 
-          <el-table-column prop="sex"
-                           label="性别"
-                           align="left">
+          <el-table-column prop="MOBILE"
+                           label="手机号">
           </el-table-column>
 
-          <el-table-column prop="email"
+          <el-table-column prop="IDCARD_NO"
+                           label="身份证号">
+          </el-table-column>
+
+          <el-table-column prop="EAMIL"
                            label="邮箱"
                            align="left">
-          </el-table-column>
-
-          <el-table-column label="状态">
-            <template slot-scope="scope">
-              <el-switch v-model="scope.row.status"></el-switch>
-            </template>
           </el-table-column>
 
           <el-table-column label="操作"
@@ -87,17 +87,22 @@
                            v-if="showEdit || showDelete"
                            width="300px">
             <template slot-scope="scope">
+              <!-- 编辑按钮 -->
               <el-button size="mini"
                          icon="el-icon-edit"
                          @click="handleEdit(scope.$index, scope.row)"
                          v-if="showEdit">编辑
               </el-button>
+
+              <!-- 删除按钮 -->
               <el-button size="mini"
                          type="danger"
                          icon="el-icon-delete"
                          @click="handleDelete(scope.$index, scope.row)"
                          v-if="showDelete">删除
               </el-button>
+
+              <!-- 配置按钮 -->
               <el-tooltip class="item"
                           effect="dark"
                           content="分配角色"
@@ -115,7 +120,7 @@
         <el-pagination @size-change="handleSizeChange"
                        @current-change="handleCurrentChange"
                        :current-page="queryInfo.pagenum"
-                       :page-sizes="[1, 5, 10, 20]"
+                       :page-sizes="[5, 10, 15, 20]"
                        :page-size="queryInfo.pagesize"
                        layout="total, sizes, prev, pager, next, jumper"
                        :total="this.userList.length">
@@ -128,55 +133,69 @@
       <!-- 弹出的模态框，新增和修改用同一个 -->
       <el-dialog :title="titleMap[dialogStatus]"
                  :visible.sync="dialogFormVisible"
-                 width="35%"
+                 width="40%"
                  :before-close="modalClose">
         <el-form ref="userFormRef"
                  :model="form"
                  style="display=inline-block"
                  :rules="userFormRules">
-          <el-form-item label="ID"
-                        class="addFormID">
-            <el-input v-model="form.id"
-                      auto-complete="off"></el-input>
-          </el-form-item>
-          <el-form-item prop="username"
+
+          <el-form-item prop="USER_NAME"
                         label="姓名"
                         class="formInput">
-            <el-input v-model="form.username"
-                      auto-complete="off"></el-input>
+            <el-input v-model="form.USER_NAME"></el-input>
           </el-form-item>
-          <el-form-item prop="password"
-                        label="密码"
+
+          <el-form-item prop="IDCARD_NO"
+                        label="身份证号"
                         class="formInput">
-            <el-input v-model="form.password"
-                      auto-complete="off"></el-input>
+            <el-input v-model="form.IDCARD_NO"
+                      disabled></el-input>
           </el-form-item>
-          <el-form-item label="性别"
+
+          <el-form-item prop="JOB_TITLE"
+                        label="职称"
                         class="formInput">
-            <el-select v-model="form.sex"
-                       placeholder="请选择性别">
-              <el-option label="男"
-                         value="男"></el-option>
-              <el-option label="女"
-                         value="女"></el-option>
-            </el-select>
+            <el-input v-model="form.JOB_TITLE"></el-input>
           </el-form-item>
-          <el-form-item prop="email"
+
+          <el-form-item prop="MOBILE"
+                        label="手机号"
+                        class="formInput">
+            <el-input v-model="form.MOBILE"></el-input>
+          </el-form-item>
+
+          <el-form-item prop="EMAIL"
                         label="邮箱"
                         class="formInput">
-            <el-input v-model="form.email"
-                      auto-complete="off"></el-input>
+            <el-input v-model="form.EMAIL"></el-input>
           </el-form-item>
-          <!-- <el-form-item label="出场时间"
+
+          <el-form-item orop="ORG_NO"
+                        label="机构编码"
                         class="formInput">
-            <div class="block"
-                 style="margin-top:40px">
-              <el-date-picker v-model="form.date"
-                              type="date"
-                              placeholder="选择日期">
-              </el-date-picker>
-            </div>
-          </el-form-item> -->
+            <el-input v-model="form.ORG_NO"
+                      disabled></el-input>
+          </el-form-item>
+
+          <el-form-item prop="TYPE"
+                        label="用户类型"
+                        class="formInput">
+            <el-input v-model="form.TYPE"></el-input>
+          </el-form-item>
+
+          <el-form-item prop="JOB_POSITION"
+                        label="职务"
+                        class="formInput">
+            <el-input v-model="form.JOB_POSITION"></el-input>
+          </el-form-item>
+
+          <el-form-item prop="REMARK"
+                        label="备注"
+                        class="formInput">
+            <el-input v-model="form.REMARK"></el-input>
+          </el-form-item>
+
         </el-form>
         <div slot="footer"
              class="dialog-footer">
@@ -193,11 +212,12 @@
 </template>
 
 <script>
-import { getRequest } from '../../api/User'
+import { getRequest, putRequest } from '../../api/uum'
 export default {
   data () {
     return {
-
+      // 搜索框
+      searchInfo: '',
       // 人员数据
       userList: [],
       selItems: [],
@@ -207,7 +227,15 @@ export default {
       // 新增和修改的dialog
       dialogFormVisible: false,
       form: {
-
+        USER_NAME: '',
+        IDCARD_NO: '',
+        JOB_TITLE: '',
+        MOBILE: '',
+        EMAIL: '',
+        ORG_NO: '',
+        TYPE: '',
+        JOB_POSITION: '',
+        REMARK: ''
       },
       titleMap: {
         add: '新增人员',
@@ -229,10 +257,9 @@ export default {
         ]
       },
       queryInfo: {
-        // 搜索框
         query: '',
         pagenum: 1,
-        pagesize: 2
+        pagesize: 5
       },
       total: ''
     }
@@ -247,30 +274,24 @@ export default {
       // this.$router.push({ path: '/blogDetail', query: { aid: row.id } })
       this.$Message(row)
     },
+
+    // 修改按钮
     handleEdit (index, row) {
       // this.$router.push({ path: '/editBlog', query: { from: this.activeName, id: row.id } })
       this.dialogStatus = 'edit'
       this.dialogFormVisible = true
-      this.form = this.userList[index]
+      // this.form = this.userList[index]
     },
     // 非物理删除，放入垃圾数据
     handleDelete (index, row) {
-      // for (var i = 0; i < this.userList.length; i++) {
-      //   if (this.userList[i].id === row.id) {
-      //     this.userList.splice(i, 1)
-      //     break
-      //   }
-      // }
-      this.deleteUser(row.id)
+
     },
     getUser () {
       // var url = '/urm/list/TB_USER'
-      var url = '/user'
-      var params = ''
-      getRequest(url, params).then(resp => {
+      getRequest('/ums/service/V1/res/users', { startTime: '2017-06-21T08:00:00.000Z' }).then(resp => {
         this.loading = false
-        this.userList = resp.data
-        // _this.$message({ type: 'error', message: '数据加载失败!' })
+        this.userList = resp.data.data
+        this.total = resp.data.total
       }).catch(resp => {
         // 压根没见到服务器
         this.loading = false
@@ -278,28 +299,10 @@ export default {
       })
     },
     deleteUser (id) {
-      // var _this = this
-      // var url = ''
-      // var params = ''
-      // getRequest(url, params).then(resp => {
-      //   _this.loading = false
-      //   this.userList = resp.data
-      //   console.log(resp)
-      //   // _this.$message({ type: 'error', message: '数据加载失败!' })
-      // }).catch(resp => {
-      //   // 压根没见到服务器
-      //   _this.loading = false
-      //   _this.$message({ type: 'error', message: '加载人员数据失败！' })
-      // })
-      for (var i = 0; i < this.userList.length; i++) {
-        if (this.userList[i].id === id) {
-          this.userList.splice(i, 1)
-          break
-        }
-      }
+
     },
     searchClick () {
-      console.log(this.queryInfo.query)
+      console.log(this.searchInfo)
     },
     // 新增人员  模态框
     addEquipment () {
@@ -307,23 +310,30 @@ export default {
       this.dialogStatus = 'add'
     },
 
-    // 确认按钮
+    // 确认按钮,添加和修改为同一个 dialog
     addFinished () {
+      this.dialogFormVisible = false
+
       this.$refs.userFormRef.validate(vali => {
         if (!vali) return
 
-        this.dialogFormVisible = false
         if (this.dialogStatus === 'add') {
-          if (this.userList.length !== 0) {
-            this.form.id = this.userList[this.userList.length - 1].id + 1
-          }
-          this.form.id = 0
-          this.userList.push(this.form)
+          console.log('添加')
         }
-        this.form = {}
+        if (this.dialogStatus === 'edit') {
+          console.log(this.form)
+          var url = '/ums/service/V1/res/users/'
+          let params = this.form
+          putRequest(url, params).then(resp => {
+            console.log(resp)
+          }).catch(resp => {
+            this.$message({ type: 'error', message: '修改人员数据失败！' })
+          })
+        }
       })
+      this.$refs.userFormRef.resetFields()
     },
-    // 返回
+    // 模态框返回按钮
     addCancel () {
       this.dialogFormVisible = false
       this.$refs.userFormRef.resetFields()
@@ -346,6 +356,7 @@ export default {
   props: [
   ],
   created: function () {
+    console.log('创建实例完成！')
     // 人员展示列表
     this.getUser()
   },
@@ -357,11 +368,8 @@ export default {
 </script>
 
 <style scoped>
-.addFormID {
-  display: none;
-}
 .formInput {
-  width: 220px;
+  width: 200px;
   display: inline-block;
   margin: 20px;
 }

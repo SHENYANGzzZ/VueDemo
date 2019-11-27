@@ -5,16 +5,30 @@ import Login from '../src/components/login/Login.vue'
 import User from '../src/components/demo/User.vue'
 import Home from '../src/components/home/Home.vue'
 import Test from '../src/components/test'
+import Echarts from './components/demo/echart.vue'
+// uum应急管理部
+import UUM from './components/demo/uumRest.vue'
 
 Vue.use(VueRouter)
 
 // 路由规则
 const routes = [
-  { path: '/', redirect: '/login' },
+  { path: '/', redirect: '/home' },
   { path: '/login', component: Login },
   { path: '/user', component: User },
-  { path: '/home', component: Home },
-  { path: '/test', component: Test }
+  {
+    path: '/home',
+    component: Home,
+    redirect: '/test',
+    children: [
+      { path: '/test', component: Test },
+      { path: '/users', component: User },
+      { path: '/roles', component: Test },
+      { path: '/echarts', component: Echarts },
+      { path: '/uum', component: UUM }
+    ]
+  }
+
 ]
 
 // 路由实例

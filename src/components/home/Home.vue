@@ -7,7 +7,7 @@
           <img class="head_img"
                src="../../assets/logo.png"
                alt="图片显示异常！" />
-          <span>Learn By ing</span>
+          <span>Good study Day up</span>
         </div>
         <el-button type="info"
                    @click="logout">退出
@@ -16,15 +16,21 @@
 
       <el-container>
         <!-- 左侧边栏 -->
-        <el-aside width="300px">
-          <el-menu default-active="2"
+        <el-aside :width="isClose ? '64px' : '300px'">
+          <!-- 折叠按钮 -->
+          <div class="toggleBtn"
+               @click="tolggleClose">|||</div>
+
+          <el-menu :default-active="activePath"
                    class="el-menu-vertical-demo"
-                   @open="handleOpen"
-                   @close="handleClose"
                    background-color="#545c64"
                    text-color="#fff"
-                   active-text-color="#ffd04b">
-            <!-- 菜单一 -->
+                   active-text-color="#409EEE"
+                   unique-opened
+                   :collapse="isClose"
+                   :collapse-transition="false"
+                   router>
+            <!-- 菜单 -->
             <el-submenu :index="item.id"
                         v-for="item in menuList"
                         :key="item.id">
@@ -34,52 +40,26 @@
               </template>
               <el-menu-item-group>
                 <!-- <template slot="title">基础信息维护</template> -->
-                <el-menu-item :index="childrenItem.id"
+                <el-menu-item :index="'/' + childrenItem.path"
                               v-for="childrenItem in item.children"
-                              :key="childrenItem.id">
+                              :key="childrenItem.id"
+                              @click="menuActive('/' + childrenItem.path)">
                   {{ childrenItem.authName }}
                 </el-menu-item>
 
-                <!-- <el-menu-item index="user"
-                              @click="userManager">人员管理</el-menu-item>
-                <el-menu-item index="1-2">角色管理</el-menu-item> -->
               </el-menu-item-group>
-              <!-- <el-menu-item-group title="分组2">
-                    <el-menu-item index="1-3">选项3</el-menu-item>
-                  </el-menu-item-group> -->
-              <!-- <el-submenu index="1-4">
-                    <template slot="title">选项4</template>
-                    <el-menu-item index="1-4-1">选项1</el-menu-item>
-                  </el-submenu> -->
             </el-submenu>
-
-            <!-- 菜单二 -->
-            <!-- <el-menu-item index="2">
-                  <i class="el-icon-location"></i>
-                  <span slot="title">导航二</span>
-                </el-menu-item>
-
-                <el-menu-item index="3"
-                              disabled>
-                  <i class="el-icon-document"></i>
-                  <span slot="title">导航三</span>
-                </el-menu-item>
-
-                <el-menu-item index="4"
-                              disabled>
-                  <i class="el-icon-setting"></i>
-                  <span slot="title">导航四</span>
-                </el-menu-item> -->
           </el-menu>
         </el-aside>
+
         <!-- 主体区 -->
         <el-main>
-          <router-view />
+          <router-view></router-view>
         </el-main>
       </el-container>
     </el-container>
   </div>
-  <!--   p376  -->
+
 </template>
 
 <script>
@@ -91,13 +71,6 @@ export default {
 
   },
   methods: {
-    // 测试方法
-    handleOpen (key, keyPath) {
-      console.log(key, keyPath)
-    },
-    handleClose (key, keyPath) {
-      console.log(key, keyPath)
-    },
 
     // 业务方法
     userManager () {
@@ -113,24 +86,48 @@ export default {
     // 登录成功获取左侧的菜单
     getMenuList () {
       axios.get('menu').then((response) => {
+        // 菜单信息
         var resMenu = response.data[0]
+        // 响应信息
         var resInfo = response.data[1]
         if (resInfo.code !== 200) return this.$$message.error(resInfo.meg)
 
         this.menuList = resMenu
-        console.log(this.menuList)
+        // console.log(this.menuList)
       }).catch(function (error) {
         console.log(error)
       })
+    },
+
+    // 侧边栏的折叠和展开
+    tolggleClose () {
+      this.isClose = !this.isClose
+    },
+
+    // 保存激活菜单的状态
+    menuActive (path) {
+      window.sessionStorage.setItem('activePath', path)
+      this.activePath = path
     }
   },
   data () {
     return {
-      menuList: []
+      // 左侧边栏
+      menuList: [],
+
+      // 侧边栏是否收起
+      isClose: false,
+
+      // 当前激活的菜单
+      activePath: ''
+
     }
   },
   created () {
+    // 获取菜单
     this.getMenuList()
+    // 获取当前激活的菜单
+    this.activePath = window.sessionStorage.getItem('activePath')
   }
 
 }
@@ -171,5 +168,16 @@ export default {
   width: 100%;
   height: 100%;
   position: absolute;
+}
+.toggleBtn {
+  background-color: #4a5064;
+  font-size: 10px;
+  line-height: 24px;
+  color: white;
+  letter-spacing: 0.2em;
+  cursor: pointer;
+}
+.el-menu-vertical-demo {
+  border: 1px solid #545c64;
 }
 </style>

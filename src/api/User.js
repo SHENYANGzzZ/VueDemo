@@ -2,7 +2,7 @@
 import axios from 'axios'
 
 // url基础路径，在main.js中配置则此处代码冗余
-let base = 'http://127.0.0.1:9090'
+// let base = 'http://127.0.0.1:9090'
 
 export const getRequest = (url, params) => {
   return axios({
@@ -12,7 +12,7 @@ export const getRequest = (url, params) => {
       'Content-Type': 'application/x-www-form-urlencoded',
       'appKey': '123'
     },
-    url: `${base}${url}`,
+    url: url,
     transformRequest: [function (data) {
       let ret = ''
       for (let item in data) {
@@ -26,7 +26,7 @@ export const getRequest = (url, params) => {
 export const postRequest = (url, params) => {
   return axios({
     method: 'post',
-    url: `${base}${url}`,
+    // url: `${base}${url}`,
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
       'appKey': '123'
@@ -51,7 +51,7 @@ export const deleteRequest = (url, params) => {
       'Content-Type': 'application/x-www-form-urlencoded',
       'appKey': '123'
     },
-    url: `${base}${url}`,
+    // url: `${base}${url}`,
     transformRequest: []
   })
 }

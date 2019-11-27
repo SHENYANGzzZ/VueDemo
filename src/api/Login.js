@@ -2,7 +2,7 @@
 import axios from 'axios'
 
 // url基础路径
-let base = 'http://127.0.0.1:9090'
+// let base = 'http://127.0.0.1:9090'
 
 export const getRequest = (url, params) => {
 }
@@ -10,7 +10,7 @@ export const getRequest = (url, params) => {
 export const postRequest = (url, params) => {
   return axios({
     method: '',
-    url: `${base}${url}`,
+    url: url,
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'
     },

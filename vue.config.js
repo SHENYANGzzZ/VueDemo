@@ -23,10 +23,14 @@ module.exports = {
     hotOnly: false,
     /* 使用代理 */
     proxy: {
+      '/ums': {
+        target: 'http://10.3.0.172:11080',
+        ws: true,
+        changeOrigin: true
+      },
       '/': {
-        /* 目标代理服务器地址 */
-        target: 'http://192.168.10.185:8080/',
-        /* 允许跨域 */
+        target: 'http://127.0.0.1:9090',
+        ws: true,
         changeOrigin: true
       }
     }
