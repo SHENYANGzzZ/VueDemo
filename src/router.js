@@ -8,6 +8,8 @@ import Test from './components/test'
 import Echarts from './components/demo/echart.vue'
 // uum应急管理部
 import UUM from './components/demo/uumRest.vue'
+// 测试菜单
+import diaTest from './components/demo/MytestDialog.vue'
 
 Vue.use(VueRouter)
 
@@ -25,7 +27,8 @@ const routes = [
       { path: '/users', component: User },
       { path: '/roles', component: Test },
       { path: '/echarts', component: Echarts },
-      { path: '/uum', component: UUM }
+      { path: '/uum', component: UUM },
+      { path: '/dia', component: diaTest }
     ]
   }
 

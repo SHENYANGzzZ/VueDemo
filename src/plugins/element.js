@@ -27,7 +27,8 @@ import {
   Row,
   Col,
   Switch,
-  Tooltip
+  Tooltip,
+  Divider
 } from 'element-ui'
 
 Vue.use(Button)
@@ -56,6 +57,7 @@ Vue.use(Row)
 Vue.use(Col)
 Vue.use(Switch)
 Vue.use(Tooltip)
+Vue.use(Divider)
 
 //  Vue原型对象的挂载
 Vue.prototype.$message = Message

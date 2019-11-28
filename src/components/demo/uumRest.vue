@@ -17,7 +17,7 @@
         <el-row :gutter="10">
           <el-col :span="7">
             <!-- 搜索框 -->
-            <el-input placeholder="提示文字"
+            <el-input placeholder="按姓名搜索"
                       prefix-icon="el-icon-search"
                       v-model="searchInfo"
                       clearable>
@@ -57,10 +57,15 @@
             </template>
           </el-table-column>
 
-          <el-table-column label="姓名"
+          <el-table-column class="unameCss"
+                           label="姓名"
                            align="left">
             <template slot-scope="scope">
-              {{ scope.row.USER_NAME }}
+              <el-button type="text"
+                         @click="change(scope.row, dialogVisible)">
+                {{ scope.row.USER_NAME }}
+              </el-button>
+
             </template>
           </el-table-column>
 
@@ -125,8 +130,10 @@
                        layout="total, sizes, prev, pager, next, jumper"
                        :total="this.userList.length">
         </el-pagination>
-
       </div>
+      <el-button @click="batchBtn">
+        批量操作
+      </el-button>
     </el-card>
 
     <div>
@@ -134,7 +141,8 @@
       <el-dialog :title="titleMap[dialogStatus]"
                  :visible.sync="dialogFormVisible"
                  width="40%"
-                 :before-close="modalClose">
+                 :before-close="modalClose"
+                 :close-on-click-modal="false">
         <el-form ref="userFormRef"
                  :model="form"
                  style="display=inline-block"
@@ -150,7 +158,7 @@
                         label="身份证号"
                         class="formInput">
             <el-input v-model="form.IDCARD_NO"
-                      disabled></el-input>
+                      :disabled="disabled"></el-input>
           </el-form-item>
 
           <el-form-item prop="JOB_TITLE"
@@ -175,7 +183,7 @@
                         label="机构编码"
                         class="formInput">
             <el-input v-model="form.ORG_NO"
-                      disabled></el-input>
+                      :disabled="disabled"></el-input>
           </el-form-item>
 
           <el-form-item prop="TYPE"
@@ -204,15 +212,17 @@
                      @click="addFinished">确 定</el-button>
         </div>
       </el-dialog>
-
     </div>
-
+    <!-- 这里是用户详情的dialog -->
+    <two></two>
   </div>
 
 </template>
 
 <script>
 import { getRequest, putRequest, deleteRequest } from '../../api/uum'
+import two from './UserDetils'
+
 export default {
   data () {
     return {
@@ -226,6 +236,7 @@ export default {
       showDelete: true,
       // 新增和修改的dialog
       dialogFormVisible: false,
+      dialogVisible: true,
       form: {
         USER_NAME: '',
         IDCARD_NO: '',
@@ -261,11 +272,15 @@ export default {
         pagenum: 1,
         pagesize: 5
       },
-      total: ''
+      total: '',
+
+      // dialog的禁止输入
+      disabled: true
     }
   },
   methods: {
     handleSelectionChange (val) {
+      // 把选中的这一行的对象放入数组
       this.selItems = val
       console.log(this.selItems)
     },
@@ -280,15 +295,27 @@ export default {
       // this.$router.push({ path: '/editBlog', query: { from: this.activeName, id: row.id } })
       this.dialogStatus = 'edit'
       this.dialogFormVisible = true
-      // this.form = this.userList[index]
+      this.form = this.userList[index]
     },
     // 删除
     handleDelete (index, row) {
       this.deleteUser(row.USER_ID)
     },
     getUser () {
-      // var url = '/urm/list/TB_USER'
-      getRequest('/ums/service/V1/res/users', { startTime: '2017-06-21T08:00:00.000Z' }).then(resp => {
+      let params = { startTime: '2017-06-21T08:00:00.000Z' }
+      getRequest('/ums/service/V1/res/users', params).then(resp => {
+        this.loading = false
+        this.userList = resp.data.data
+        this.total = resp.data.total
+      }).catch(resp => {
+        // 压根没见到服务器
+        this.loading = false
+        this.$message({ type: 'error', message: '加载人员数据失败！' })
+      })
+    },
+    serachUser () {
+      let params = { USER_NAME: this.searchInfo }
+      getRequest('/ums/service/V1/res/users', params).then(resp => {
         this.loading = false
         this.userList = resp.data.data
         this.total = resp.data.total
@@ -307,12 +334,15 @@ export default {
       })
     },
     searchClick () {
-      console.log(this.searchInfo)
+      if (this.searchInfo.length !== 0) {
+        this.serachUser()
+      }
     },
     // 新增人员  模态框
     addEquipment () {
       this.dialogFormVisible = true
       this.dialogStatus = 'add'
+      this.disabled = false
     },
 
     // 确认按钮,添加和修改为同一个 dialog
@@ -340,13 +370,17 @@ export default {
     },
     // 模态框返回按钮
     addCancel () {
+      this.disabled = true
       this.dialogFormVisible = false
-      this.$refs.userFormRef.resetFields()
+      this.form = {}
+      this.$refs.userFormRef.clearValidate()
     },
     // 模态框关闭
     modalClose (done) {
       done()
-      this.$refs.userFormRef.resetFields()
+      this.disabled = true
+      this.form = {}
+      this.$refs.userFormRef.clearValidate()
     },
     // 监听每页展示条数
     handleSizeChange (size) {
@@ -355,6 +389,14 @@ export default {
     // 监听当前选中的页码
     handleCurrentChange (page) {
       this.queryInfo.pagenum = page
+    },
+    // 查看人员详情的dialog
+    change (val, bool) {
+      this.$root.bus.$emit('transmit', val)
+      this.$root.bus.$emit('isShow', bool)
+    },
+    batchBtn () {
+      this.$message.info('pi')
     }
 
   },
@@ -367,6 +409,9 @@ export default {
   },
   mounted: function () {
     console.log('挂载完成！')
+  },
+  components: {
+    two
   }
 
 }
@@ -380,5 +425,9 @@ export default {
 }
 .el-table {
   margin-top: 10px;
+}
+.unameCss {
+  color: rgb(25, 139, 231);
+  cursor: pointer;
 }
 </style>

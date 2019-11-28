@@ -17,5 +17,9 @@ axios.interceptors.request.use(config => {
 new Vue({
   router,
   store,
-  render: h => h(App)
+  render: h => h(App),
+  data: {
+    // 组件之间通信的第三方Vue实例
+    bus: new Vue()
+  }
 }).$mount('#app')
