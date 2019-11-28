@@ -336,6 +336,8 @@ export default {
     searchClick () {
       if (this.searchInfo.length !== 0) {
         this.serachUser()
+      } else {
+        this.$message.info('请输入要搜索的姓名')
       }
     },
     // 新增人员  模态框
