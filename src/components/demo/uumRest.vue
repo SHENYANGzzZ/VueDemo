@@ -20,7 +20,8 @@
             <el-input placeholder="按姓名搜索"
                       prefix-icon="el-icon-search"
                       v-model="searchInfo"
-                      clearable>
+                      clearable
+                      @clear="getUser">
               <!-- 搜索按钮 -->
               <el-button slot="append"
                          icon="el-icon-search"

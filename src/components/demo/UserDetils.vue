@@ -4,16 +4,16 @@
                :visible.sync="dialogVisible">
       <el-row type="flex">
         <el-col :span="6">
-          姓名：
+          <h4>姓名：</h4>
         </el-col>
         <el-col :span="6">
-          姓名拼音：
+          <h4>姓名拼音：</h4>
         </el-col>
         <el-col :span="6">
-          身份证号：
+          <h4>身份证号：</h4>
         </el-col>
         <el-col :span="6">
-          手机号码：
+          <h4>手机号码：</h4>
         </el-col>
       </el-row>
       <el-row type="flex">
@@ -33,16 +33,16 @@
       <el-divider></el-divider>
       <el-row type="flex">
         <el-col :span="6">
-          职务：
+          <h4>职务：</h4>
         </el-col>
         <el-col :span="6">
-          职称：
+          <h4>职称：</h4>
         </el-col>
         <el-col :span="6">
-          邮箱：
+          <h4>邮箱：</h4>
         </el-col>
         <el-col :span="6">
-          备注：
+          <h4>备注：</h4>
         </el-col>
       </el-row>
       <el-row type="flex">

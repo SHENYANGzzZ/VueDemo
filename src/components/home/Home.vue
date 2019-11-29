@@ -7,7 +7,7 @@
           <img class="head_img"
                src="../../assets/logo.png"
                alt="图片显示异常！" />
-          <span>Good study Day up</span>
+          <span>Life After Life</span>
         </div>
         <el-button type="info"
                    @click="logout">退出
@@ -70,6 +70,19 @@ export default {
   props: {
 
   },
+  data () {
+    return {
+      // 左侧边栏
+      menuList: [],
+
+      // 侧边栏是否收起
+      isClose: false,
+
+      // 当前激活的菜单
+      activePath: ''
+
+    }
+  },
   methods: {
 
     // 业务方法
@@ -108,19 +121,6 @@ export default {
     menuActive (path) {
       window.sessionStorage.setItem('activePath', path)
       this.activePath = path
-    }
-  },
-  data () {
-    return {
-      // 左侧边栏
-      menuList: [],
-
-      // 侧边栏是否收起
-      isClose: false,
-
-      // 当前激活的菜单
-      activePath: ''
-
     }
   },
   created () {
