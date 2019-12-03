@@ -10,6 +10,7 @@ import Echarts from './components/demo/echart.vue'
 import UUM from './components/demo/uumRest.vue'
 // 测试菜单
 import diaTest from './components/demo/MytestDialog.vue'
+import fileDownload from './components/demo/download.vue'
 
 Vue.use(VueRouter)
 
@@ -28,7 +29,8 @@ const routes = [
       { path: '/roles', component: Test },
       { path: '/echarts', component: Echarts },
       { path: '/uum', component: UUM },
-      { path: '/dia', component: diaTest }
+      { path: '/dia', component: diaTest },
+      { path: '/dl', component: fileDownload }
     ]
   }
 
