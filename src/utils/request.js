@@ -3,7 +3,7 @@ import QS from 'qs'
 // import Cookies from 'js-cookie'
 
 /*
-  @ 创建自定义axios实例
+  @ 创建自定义axios实例，定义全局的请求头
 */
 const api = axios.create({
   baseURL: '',

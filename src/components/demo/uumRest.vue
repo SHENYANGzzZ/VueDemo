@@ -221,7 +221,7 @@
 </template>
 
 <script>
-import { getRequest, putRequest, deleteRequest } from '../../api/uum'
+import { getRequest, putRequest, deleteRequest, postRequest } from '../../api/uum'
 import two from './UserDetils'
 
 export default {
@@ -304,7 +304,7 @@ export default {
     },
     getUser () {
       let params = { startTime: '2017-06-21T08:00:00.000Z' }
-      getRequest('/ums/service/V1/res/users', params).then(resp => {
+      getRequest(params).then(resp => {
         this.loading = false
         this.userList = resp.data.data
         this.total = resp.data.total
@@ -316,7 +316,7 @@ export default {
     },
     serachUser () {
       let params = { USER_NAME: this.searchInfo }
-      getRequest('/ums/service/V1/res/users', params).then(resp => {
+      getRequest(params).then(resp => {
         this.loading = false
         this.userList = resp.data.data
         this.total = resp.data.total
@@ -327,11 +327,11 @@ export default {
       })
     },
     deleteUser (id) {
-      deleteRequest('', {}).then(resp => {
+      deleteRequest({}).then(resp => {
 
       }).catch(resp => {
         this.loading = false
-        this.$message({ type: 'error', message: '删除人员数据失败！' })
+        this.$message({ type: 'error', message: '删除人员失败！' })
       })
     },
     searchClick () {
@@ -357,12 +357,17 @@ export default {
 
         if (this.dialogStatus === 'add') {
           console.log('添加')
+          let params
+          postRequest(params).then(resp => {
+            console.log(resp)
+          }).catch(resp => {
+            this.$message({ type: 'error', message: '新增人员失败！' })
+          })
         }
         if (this.dialogStatus === 'edit') {
           console.log(this.form)
-          var url = '/ums/service/V1/res/users/'
           let params = this.form
-          putRequest(url, params).then(resp => {
+          putRequest(params).then(resp => {
             console.log(resp)
           }).catch(resp => {
             this.$message({ type: 'error', message: '修改人员数据失败！' })

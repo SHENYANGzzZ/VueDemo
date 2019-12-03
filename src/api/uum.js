@@ -1,6 +1,10 @@
 import request from '../utils/request'
 
-export function getRequest (uri, params) {
+// 应急管理部 uum 政务人员维护 uri
+const uri = '/ums/service/V1/res/users'
+
+// 获取人员展示列表
+export function getRequest (params) {
   return request({
     url: uri,
     method: 'get',
@@ -8,7 +12,8 @@ export function getRequest (uri, params) {
   })
 }
 
-export function postRequest (uri, params) {
+// 新增人员
+export function postRequest (params) {
   return request({
     url: uri,
     method: 'post',
@@ -16,7 +21,8 @@ export function postRequest (uri, params) {
   })
 }
 
-export function deleteRequest (uri, params) {
+// 删除
+export function deleteRequest (params) {
   return request({
     url: uri,
     method: 'delete',
@@ -24,7 +30,8 @@ export function deleteRequest (uri, params) {
   })
 }
 
-export function putRequest (uri, params) {
+// 修改
+export function putRequest (params) {
   return request({
     url: uri,
     method: 'put',
